@@ -17,5 +17,6 @@ else
 	BACKGROUND="r";
 fi
 color b "$BACKGROUND" "${COLOR}"
-echo "${TEMP}C"
+printf "%sC" $TEMP
 color --
+echo ""
