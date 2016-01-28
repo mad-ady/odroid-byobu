@@ -1,0 +1,28 @@
+#!/bin/sh
+# FAN power monitor for Odroid XU3/4
+FAN=$(echo `cat /sys/devices/odroid_fan.*/pwm_duty`*100/255 | bc)
+#output nothing if FAN is 0
+if [ "$FAN" -eq "0" ]; then
+	exit 0;
+fi
+
+#for the color function and $BYOBU_DARK
+. /usr/lib/byobu/include/shutil
+#for color codes see man screen
+COLOR="b" #blue
+BACKGROUND=$BYOBU_DARK
+if [ "$FAN" -le 10 ]; then
+	COLOR="B"; #blue
+elif [ "$FAN" -le 40 ]; then
+	COLOR="Y"; #yellow
+elif [ "$FAN" -le 70 ]; then
+	COLOR="R"; #red
+else 
+	COLOR="W"; #bright white
+	BACKGROUND="r";
+fi
+
+color b "$BACKGROUND" "${COLOR}"
+echo -n "F${FAN}%%"
+color --
+printf "\n"
