@@ -1,8 +1,12 @@
 #!/bin/sh
 # FAN power monitor for Odroid XU3/4
-FAN=$(echo `cat /sys/devices/odroid_fan.*/pwm_duty`*100/255 | bc)
+FVALUE=`cat /sys/devices/odroid_fan.*/pwm_duty`;
+if [ -z "$FVALUE" ]; then
+	exit 0;
+fi
+FAN=`echo $FVALUE*100/255 | bc`
 #output nothing if FAN is 0
-if [ "$FAN" -eq "0" ]; then
+if [ -z "$FAN" -o "$FAN" -eq "0" ]; then
 	exit 0;
 fi
 
