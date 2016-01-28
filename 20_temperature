@@ -1,0 +1,21 @@
+#!/bin/sh
+# Temperature monitor for Odroid C1/XU3/4
+TEMP=`cat /sys/devices/virtual/thermal/thermal_zone0/temp | sed 's/000$//'`
+#for the color function and $BYOBU_DARK
+. /usr/lib/byobu/include/shutil
+#for color codes see man screen
+COLOR="b" #blue
+BACKGROUND=$BYOBU_DARK
+if [ "$TEMP" -le 40 ]; then
+	COLOR="B"; #blue
+elif [ "$TEMP" -le 55 ]; then
+	COLOR="Y"; #yellow
+elif [ "$TEMP" -le 70 ]; then
+	COLOR="R"; #red
+else 
+	COLOR="W"; #bright white
+	BACKGROUND="r";
+fi
+color b "$BACKGROUND" "${COLOR}"
+echo "${TEMP}C"
+color --
