@@ -1,0 +1,30 @@
+#!/bin/sh
+# MALI utilization monitor for Odroid XU3/4
+FVALUE=`cat /sys/devices/11800000.mali/utilization`;
+if [ -z "$FVALUE" ]; then
+        exit 0;
+fi
+if [ "$FVALUE" -eq "0" ]; then
+        exit 0;
+fi
+
+#for the color function and $BYOBU_DARK
+. /usr/lib/byobu/include/shutil
+#for color codes see man screen
+COLOR="b" #blue
+BACKGROUND=$BYOBU_DARK
+if [ "$FVALUE" -le 10 ]; then
+        COLOR="B"; #blue
+elif [ "$FVALUE" -le 40 ]; then
+        COLOR="Y"; #yellow
+elif [ "$FVALUE" -le 70 ]; then
+        COLOR="R"; #red
+else 
+        COLOR="W"; #bright white
+        BACKGROUND="r";
+fi
+
+color b "$BACKGROUND" "${COLOR}"
+echo -n "G${FVALUE}%%"
+color --
+printf "\n"
