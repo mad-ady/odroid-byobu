@@ -1,0 +1,17 @@
+#!/bin/sh -e
+# CPU count + freqiemcu monitor for Odroid XU3/4 (big cores)
+
+. /usr/lib/byobu/include/shutil
+read freq < /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq;
+freq=`echo $freq/1000000 | bc -l`
+
+cpus=0;
+for i in `seq 4 7`; do
+        read current < /sys/devices/system/cpu/cpu${i}/online
+        cpus=$(($current+$cpus));
+done
+
+[ -n "$freq" ] || return
+color b m W; printf "%dx%.1f" "$cpus" "$freq"; color -;color m W; printf "%s" "GHz"; color -- 
+printf "\n"
+# vi: syntax=sh ts=4 noexpandtab
