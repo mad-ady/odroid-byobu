@@ -10,7 +10,7 @@ for i in `seq 4 7`; do
         read current < /sys/devices/system/cpu/cpu${i}/online
         cpus=$(($current+$cpus));
 done
-
+[ "$cpus" -ne "0" ] || return
 [ -n "$freq" ] || return
 color b m W; printf "%dx%.1f" "$cpus" "$freq"; color -;color m W; printf "%s" "GHz"; color -- 
 printf "\n"

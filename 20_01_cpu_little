@@ -11,7 +11,7 @@ for i in `seq 0 3`; do
 	cpus=$(($current+$cpus));
 done
 
-
+[ "$cpus" -ne "0" ] || return
 [ -n "$freq" ] || return
 color b c W; printf "%dx%.1f" "$cpus" "$freq"; color -;color c W; printf "%s" "GHz"; color -- 
 printf "\n"
