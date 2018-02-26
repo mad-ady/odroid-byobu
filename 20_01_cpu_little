@@ -1,12 +1,11 @@
 #!/bin/sh -e
-# CPU count + freqiemcu monitor for Odroid XU3/4 (little cores)
-
+# CPU count + freq monitor for Odroid XU3/4 (little cores) or N1 (little cores)
 . /usr/lib/byobu/include/shutil
 read freq < /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq;
 freq=`echo $freq/1000000 | bc -l`
 
 cpus=0;
-for i in `seq 0 3`; do
+for i in `cat /sys/devices/system/cpu/cpu0/cpufreq/affected_cpus`; do
 	read current < /sys/devices/system/cpu/cpu${i}/online
 	cpus=$(($current+$cpus));
 done
